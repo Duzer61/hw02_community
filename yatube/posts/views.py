@@ -5,8 +5,7 @@ POSTS_NUMBER: int = 10  # Количество постов, отображае�
 
 
 def index(request):
-    posts = (Post.objects.select_related('group').order_by('-pub_date')
-             [:POSTS_NUMBER])
+    posts = Post.objects.select_related('group')[:POSTS_NUMBER]
     context = {
         'posts': posts,
     }
@@ -16,8 +15,7 @@ def index(request):
 def group_posts(request, slug):
     group = get_object_or_404(Group, slug=slug)
     template = 'posts/group_list.html'
-    posts = (Post.objects.select_related('group').filter(group=group)
-             .order_by('-pub_date')[:POSTS_NUMBER])
+    posts = group.posts.all()[:POSTS_NUMBER]
     context = {
         'group': group,
         'posts': posts,
