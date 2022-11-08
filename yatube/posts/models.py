@@ -21,11 +21,10 @@ class Post(models.Model):
     )
 
 
-# Создаем модель для групп сообществ
 class Group(models.Model):
-    title = models.CharField(max_length=200)  # Название группы
-    slug = models.SlugField(unique=True)  # уникальный адрес группы, часть URL
-    description = models.TextField()  # Описание группы
+    title = models.CharField(max_length=200)
+    slug = models.SlugField(unique=True)
+    description = models.TextField()
 
     def __str__(self) -> str:
         return self.title
