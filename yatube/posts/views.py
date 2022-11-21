@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from django.core.paginator import Paginator
 from .models import Post
 from .models import Group
+from .models import User
 POSTS_NUMBER: int = 10  # Количество постов, отображаемых на странице
 
 
@@ -28,3 +29,27 @@ def group_posts(request, slug):
         'page_obj': page_obj,
     }
     return render(request, template, context)
+
+
+def profile(request, username):
+    author = get_object_or_404(User, username=username)
+    posts = author.posts.all()
+    posts_count = posts.count()  # количество постов автора
+    author_full_name = author.get_full_name
+    context = {
+        'author': author,
+        'posts': posts,
+        'post_count': posts_count,
+        'author_full_name': author_full_name
+    }
+    return render(request, 'posts/profile.html', context)
+
+
+def post_detail(request, post_id):
+    post = get_object_or_404(Post, pk=post_id)
+    post_count = post.author.posts.count()
+    context = {
+        'post': post,
+        'post_count': post_count,
+    }
+    return render(request, 'posts/post_detail.html', context)
