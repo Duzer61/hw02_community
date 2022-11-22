@@ -15,7 +15,7 @@
         </li>
       </ul>
     </article>
-    {% for post in posts %}
+    {% for post in page_obj %}
       <article>
         <li>
           Дата публикации: {{post.pub_date|date:"d E Y"}} 
@@ -28,6 +28,7 @@
       {% endif %}
       {% if not forloop.last %}<hr>{% endif %}
     {% endfor %}
+    {% include 'posts/includes/paginator.html' %}
     <!-- Остальные посты. после последнего нет черты -->
     <!-- Здесь подключён паджинатор -->  
   </div>
