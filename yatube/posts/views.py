@@ -1,8 +1,10 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.core.paginator import Paginator
+from django.contrib.auth.decorators import login_required
 from .models import Post
 from .models import Group
 from .models import User
+from .forms import PostForm
 POSTS_NUMBER: int = 10  # Количество постов, отображаемых на странице
 
 
@@ -57,3 +59,19 @@ def post_detail(request, post_id):
         'post_count': post_count,
     }
     return render(request, 'posts/post_detail.html', context)
+
+
+@login_required
+def post_create(request):
+    if request.method == 'POST':
+        form = PostForm(request.POST)
+        if form.is_valid():
+            form.instance.author = request.user
+            form.save()
+            return redirect('posts:profile', request.user)
+    else:
+        form = PostForm()
+        context = {
+            'form': form,
+        }
+        return render(request, 'posts/create_post.html', context)

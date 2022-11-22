@@ -13,5 +13,3 @@ class SignUp(CreateView):
     # После успешной регистрации перенаправляем пользователя на главную.
     success_url = reverse_lazy('posts:index')
     template_name = 'users/signup.html'
-
-
